@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All App Prem by Prince Hamm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0e27;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: #1a1f3a;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px #00aaff44;
+        }
+        h1 {
+            text-align: center;
+            color: #00aaff;
+        }
+        .product {
+            background: #252b4a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #00aaff;
+        }
+        .product h3 {
+            margin: 0 0 5px;
+            color: #fff;
+        }
+        .product p {
+            margin: 5px 0;
+            color: #aaa;
+        }
+        .product ul {
+            color: #aaa;
+            padding-left: 20px;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ccc;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            background: #2a3050;
+            color: #fff;
+            box-sizing: border-box;
+        }
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            background: #2a3050;
+            color: #fff;
+            box-sizing: border-box;
+        }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            background: #00aaff;
+            color: #000;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background: #0088dd;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+            font-size: 14px;
+        }
+        .footer p {
+            margin: 5px 0;
+        }
+        .channel-box {
+            background: #1a1f3a;
+            border: 1px solid #25d366;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .channel-box p {
+            margin: 5px 0;
+        }
+        .channel-box .wa-link {
+            display: inline-block;
+            background: #25d366;
+            color: #000;
+            padding: 10px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .channel-box .wa-link:hover {
+            background: #1ebe5c;
+        }
+        .whatsapp-link {
+            color: #25d366;
+        }
+        .credit {
+            font-size: 12px;
+            color: #555;
+        }
+        .header-title {
+            font-size: 14px;
+            color: #aaa;
+            text-align: center;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 All App Prem by Prince Hamm</h1>
+        <p class="header-title">• Akun Premium Alight Motion •</p>
+
+        <!-- DAFTAR PRODUK -->
+        <div class="product">
+            <h3>🔥 Alight Motion Premium</h3>
+            <p>Pilih varian akun di bawah ini:</p>
+            <ul>
+                <li>Private 1 Tahun — Rp 5.000</li>
+                <li>Sharing — Rp 2.000</li>
+            </ul>
+        </div>
+
+        <!-- FORM PEMESANAN -->
+        <form id="orderForm">
+            <div class="form-group">
+                <label>👤 Nama Lengkap</label>
+                <input type="text" id="nama" placeholder="Masukkan nama Anda" required>
+            </div>
+            <div class="form-group">
+                <label>📱 Nomor WhatsApp</label>
+                <input type="text" id="wa" placeholder="Contoh: 08123456789" required>
+            </div>
+            <div class="form-group">
+                <label>📦 Pilih Varian</label>
+                <select id="produk">
+                    <option value="Alight Motion Premium - Private 1 Tahun (5.000)">Private 1 Tahun (Rp 5.000)</option>
+                    <option value="Alight Motion Premium - Sharing (2.000)">Sharing (Rp 2.000)</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">📩 Kirim Pesanan ke WhatsApp</button>
+        </form>
+
+        <!-- BAGIAN CHANNEL WA -->
+        <div class="channel-box">
+            <p style="color: #25d366; font-weight: bold; margin: 0;">📢 Gabung Saluran WhatsApp</p>
+            <p style="color: #aaa; margin: 5px 0;">Dapatkan update produk & preset terbaru!</p>
+            <a href="https://whatsapp.com/channel/0029Vb8RLk6Bqbr1Wopspu3N" target="_blank" class="wa-link">
+                💬 Join Channel
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>© 2026 Pangeran Hamm. All Rights Reserved.</p>
+            <p class="credit">💬 <span class="whatsapp-link">wa.me/+6285702358225</span></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const nama = document.getElementById('nama').value.trim();
+            const wa = document.getElementById('wa').value.trim();
+            const produk = document.getElementById('produk').value;
+
+            if (!nama || !wa) {
+                alert('⚠️ Harap isi nama dan nomor WhatsApp!');
+                return;
+            }
+
+            let waClean = wa.replace(/\D/g, '');
+            if (waClean.startsWith('0')) waClean = '62' + waClean.slice(1);
+            if (!waClean.startsWith('62')) waClean = '62' + waClean;
+
+            const pesan = `Halo Kak, saya mau pesan produk: ${produk}%0ANama: ${nama}%0ANo WA: ${wa}`;
+            window.open(`https://wa.me/${waClean}?text=${pesan}`, '_blank');
+        });
+    </script>
+</body>
+</html>
