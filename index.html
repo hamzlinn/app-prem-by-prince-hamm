@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All App Prem by Prince Hamm</title>
+    <style>
+        /* ============================================ */
+        /* 🔥 CYBER THEME — BY LYX & PANGERAN HAMM */
+        /* ============================================ */
+
+        /* --- RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', 'Courier New', monospace;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #0a0a0f;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* --- CYBER GRID BACKGROUND --- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            pointer-events: none;
+            animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(40px, 40px); }
+        }
+
+        /* --- GLITCH ORB --- */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(0, 255, 255, 0.06), transparent 60%),
+                        radial-gradient(circle at 70% 60%, rgba(255, 0, 200, 0.05), transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+            animation: orbPulse 12s ease-in-out infinite alternate;
+        }
+        @keyframes orbPulse {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+            100% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+        }
+
+        /* --- CONTAINER (GLASS + CYBER) --- */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            width: 100%;
+            background: rgba(10, 10, 20, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid rgba(0, 255, 255, 0.25);
+            box-shadow: 0 0 60px rgba(0, 255, 255, 0.08), inset 0 0 60px rgba(0, 255, 255, 0.03);
+            animation: fadeSlideIn 1s ease-out;
+        }
+
+        @keyframes fadeSlideIn {
+            0% { opacity: 0; transform: translateY(40px) scale(0.96); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* --- HEADER --- */
+        h1 {
+            text-align: center;
+            color: #00ffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            animation: glitchText 3s infinite;
+        }
+        h1 svg {
+            width: 34px;
+            height: 34px;
+            fill: #00ffff;
+            filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.5));
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.3)); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 25px rgba(0, 255, 255, 0.7)); transform: scale(1.05); }
+        }
+        @keyframes glitchText {
+            0%, 90%, 100% { opacity: 1; transform: skew(0deg); }
+            92% { opacity: 0.8; transform: skew(2deg); }
+            94% { opacity: 1; transform: skew(-2deg); }
+            96% { opacity: 0.9; transform: skew(1deg); }
+        }
+
+        .header-title {
+            text-align: center;
+            color: #7a8aaa;
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: -6px;
+            margin-bottom: 25px;
+            font-weight: 400;
+            opacity: 0.7;
+        }
+
+        /* --- PRODUCT CARD --- */
+        .product {
+            background: rgba(0, 20, 30, 0.5);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 22px;
+            border-left: 3px solid #00ffff;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .product::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.05), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .product:hover::before { opacity: 1; }
+        .product:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 12px 40px -8px rgba(0, 255, 255, 0.2);
+            border-left-color: #ff00c8;
+        }
+        .product h3 {
+            margin: 0 0 6px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 19px;
+            font-weight: 600;
+        }
+        .product h3 svg {
+            width: 24px;
+            height: 24px;
+            fill: #ff00c8;
+            filter: drop-shadow(0 0 6px rgba(255, 0, 200, 0.4));
+        }
+        .product p {
+            color: #8a9ab0;
+            font-size: 14px;
+        }
+        .product ul {
+            color: #8a9ab0;
+            padding-left: 22px;
+            margin-top: 4px;
+        }
+        .product ul li {
+            margin: 4px 0;
+            list-style: none;
+            position: relative;
+        }
+        .product ul li::before {
+            content: '›';
+            color: #00ffff;
+            position: absolute;
+            left: -16px;
+            font-weight: bold;
+        }
+
+        /* --- FORM --- */
+        .form-group {
+            margin: 18px 0;
+        }
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+            color: #b0c0d0;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .form-group label svg {
+            width: 20px;
+            height: 20px;
+            fill: #00ffff;
+            filter: drop-shadow(0 0 6px rgba(0, 255, 255, 0.2));
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            background: rgba(0, 20, 30, 0.6);
+            color: #e0e8f0;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 0 4px rgba(0, 255, 255, 0.12), 0 0 30px rgba(0, 255, 255, 0.06);
+            background: rgba(0, 30, 40, 0.7);
+        }
+
+        /* --- BUTTON --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #00ffff, #0088cc);
+            color: #000;
+            font-weight: 700;
+            font-size: 16px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            margin-top: 6px;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .btn:hover::after { opacity: 1; }
+        .btn:hover {
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.35), inset 0 0 30px rgba(0, 255, 255, 0.1);
+        }
+        .btn:active { transform: scale(0.97); }
+        .btn svg {
+            width: 22px;
+            height: 22px;
+            fill: #000;
+        }
+
+        /* --- CHANNEL BOX --- */
+        .channel-box {
+            background: rgba(0, 30, 20, 0.4);
+            border: 1px solid rgba(0, 255, 100, 0.25);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 25px;
+            text-align: center;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(4px);
+        }
+        .channel-box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 40px rgba(0, 255, 100, 0.08);
+            border-color: #00ff66;
+        }
+        .channel-box p {
+            margin: 6px 0;
+        }
+        .channel-box .wa-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #00ff66, #00cc55);
+            color: #000;
+            padding: 12px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            margin-top: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+        .channel-box .wa-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 255, 100, 0.3);
+        }
+        .channel-box .wa-link svg {
+            width: 22px;
+            height: 22px;
+            fill: #000;
+        }
+
+        /* --- ADMIN PANEL --- */
+        .admin-panel {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(20, 0, 20, 0.6);
+            border: 1px solid #ff00c8;
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+        }
+        .admin-panel h3 {
+            color: #ff00c8;
+            margin-top: 0;
+            font-size: 18px;
+            text-shadow: 0 0 20px rgba(255, 0, 200, 0.2);
+        }
+        .admin-panel p { color: #b0b0c0; }
+        .admin-panel .row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .admin-panel .row input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 0, 200, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            min-width: 150px;
+        }
+        .admin-panel .row input:focus {
+            outline: none;
+            border-color: #ff00c8;
+            box-shadow: 0 0 20px rgba(255, 0, 200, 0.1);
+        }
+        .admin-panel .btn-admin {
+            padding: 10px 24px;
+            background: #ff00c8;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .admin-panel .btn-admin:hover {
+            background: #cc00a0;
+            transform: scale(1.04);
+            box-shadow: 0 0 30px rgba(255, 0, 200, 0.3);
+        }
+        .admin-panel .btn-danger {
+            padding: 8px 18px;
+            background: #ff2244;
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        .admin-panel .btn-danger:hover {
+            background: #cc0033;
+            transform: scale(1.04);
+        }
+        .word-list {
+            color: #ff00c8;
+            font-weight: 500;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #4a5a70;
+            font-size: 13px;
+        }
+        .footer p { margin: 5px 0; }
+        .admin-btn {
+            background: none;
+            border: 1px solid #2a3a50;
+            color: #4a5a70;
+            padding: 5px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.3s ease;
+            margin-top: 6px;
+            font-family: inherit;
+        }
+        .admin-btn:hover {
+            background: rgba(0, 255, 255, 0.05);
+            color: #00ffff;
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.05);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 480px) {
+            .container { padding: 20px; }
+            h1 { font-size: 20px; flex-wrap: wrap; }
+            .product h3 { font-size: 16px; }
+            .btn { font-size: 14px; padding: 12px; }
+        }
+
+        /* --- SCROLLBAR --- */
+        ::-webkit-scrollbar { width: 6px; background: #0a0a0f; }
+        ::-webkit-scrollbar-thumb { background: #00ffff; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ==================== -->
+        <!-- 🔥 HEADER -->
+        <!-- ==================== -->
+        <h1>
+            <svg viewBox="0 0 24 24"><path d="M21.5,15.5L15.5,21.5L12.5,18.5L13.5,17.5L15.5,19.5L20.5,14.5L21.5,15.5M10.5,10.5L12.5,12.5L13.5,11.5L11.5,9.5L10.5,10.5M15.5,13.5L17.5,15.5L18.5,14.5L16.5,12.5L15.5,13.5M6.5,20.5L3.5,17.5L6.5,14.5L7.5,15.5L5.5,17.5L7.5,19.5L6.5,20.5M4.5,9.5L1.5,6.5L4.5,3.5L5.5,4.5L3.5,6.5L5.5,8.5L4.5,9.5M9.5,8.5L7.5,6.5L9.5,4.5L10.5,5.5L8.5,7.5L10.5,9.5L9.5,8.5M14.5,3.5L12.5,1.5L11.5,2.5L13.5,4.5L14.5,3.5M12.5,18.5L10.5,16.5L11.5,15.5L13.5,17.5L12.5,18.5Z"/></svg>
+            All App Prem by Prince Hamm
+        </h1>
+        <p class="header-title">• Akun Premium Alight Motion •</p>
+
+        <!-- ==================== -->
+        <!-- 🧾 PRODUCT -->
+        <!-- ==================== -->
+        <div class="product">
+            <h3>
+                <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M11,6V12L15.5,14.5L16.5,13L13,11V6H11Z"/></svg>
+                Alight Motion Premium
+            </h3>
+            <p>Pilih varian akun di bawah ini:</p>
+            <ul>
+                <li>Private 1 Tahun — Rp 5.000</li>
+                <li>Sharing — Rp 2.000</li>
+            </ul>
+        </div>
+
+        <!-- ==================== -->
+        <!-- 📝 FORM -->
+        <!-- ==================== -->
+        <form id="orderForm">
+            <div class="form-group">
+                <label>
+                    <svg viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/></svg>
+                    Nama Lengkap
+                </label>
+                <input type="text" id="nama" placeholder="Masukkan nama Anda" required>
+            </div>
+            <div class="form-group">
+                <label>
+                    <svg viewBox="0 0 24 24"><path d="M22,6.5C22,6.5 21.5,5.5 20.5,5.5L3.5,5.5C2.5,5.5 2,6.5 2,6.5L2,17.5C2,17.5 2.5,18.5 3.5,18.5L20.5,18.5C21.5,18.5 22,17.5 22,17.5L22,6.5M20,8.5L12,13.5L4,8.5L4,7.5L12,12.5L20,7.5L20,8.5Z"/></svg>
+                    Nomor WhatsApp
+                </label>
+                <input type="text" id="wa" placeholder="Contoh: 08123456789" required>
+            </div>
+            <div class="form-group">
+                <label>
+                    <svg viewBox="0 0 24 24"><path d="M19,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M12,7C13.1,7 14,7.9 14,9C14,10.1 13.1,11 12,11C10.9,11 10,10.1 10,9C10,7.9 10.9,7 12,7M12,17.5C9.9,17.5 8.1,16.4 7.3,14.8C7.7,13.3 9.2,12.2 10.9,12.2C11.3,12.2 11.7,12.3 12,12.5C12.3,12.3 12.7,12.2 13.1,12.2C14.8,12.2 16.3,13.3 16.7,14.8C15.9,16.4 14.1,17.5 12,17.5Z"/></svg>
+                    Pilih Varian
+                </label>
+                <select id="produk">
+                    <option value="Alight Motion Premium - Private 1 Tahun (5.000)">Private 1 Tahun (Rp 5.000)</option>
+                    <option value="Alight Motion Premium - Sharing (2.000)">Sharing (Rp 2.000)</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">
+                <svg viewBox="0 0 24 24"><path d="M22,6.5C22,6.5 21.5,5.5 20.5,5.5L3.5,5.5C2.5,5.5 2,6.5 2,6.5L2,17.5C2,17.5 2.5,18.5 3.5,18.5L20.5,18.5C21.5,18.5 22,17.5 22,17.5L22,6.5M20,8.5L12,13.5L4,8.5L4,7.5L12,12.5L20,7.5L20,8.5Z"/></svg>
+                Kirim Pesanan
+            </button>
+        </form>
+
+        <!-- ==================== -->
+        <!-- 📢 CHANNEL -->
+        <!-- ==================== -->
+        <div class="channel-box">
+            <p style="color: #00ff66; font-weight: 700; font-size: 15px;">📡 Gabung Saluran WhatsApp</p>
+            <p style="color: #8a9ab0; font-size: 14px;">Update produk & preset terbaru</p>
+            <a href="https://whatsapp.com/channel/0029Vb8RLk6Bqbr1Wopspu3N" target="_blank" class="wa-link">
+                <svg viewBox="0 0 24 24"><path d="M12,2C6.48,2 2,6.48 2,12C2,15.69 4.33,18.86 7.5,20.25L7.5,21.5L10.5,19.5C11.1,19.7 11.8,19.8 12,19.8C17.5,19.8 22,15.3 22,9.8C22,4.3 17.5,2 12,2M12,18.8C11.3,18.8 10.6,18.7 9.9,18.5L7.5,20V18.5C5.8,17.6 4.5,16.1 4,14.4C3.5,12.7 3.8,10.8 4.9,9.4C6,8 7.7,7.2 9.5,7.2C12.4,7.2 14.8,9.7 14.8,12.6C14.8,13.9 14.3,15.2 13.4,16.1C12.5,17 11.2,17.5 10,17.5M12,8.2C9.8,8.2 8,10 8,12.2C8,14.4 9.8,16.2 12,16.2C14.2,16.2 16,14.4 16,12.2C16,10 14.2,8.2 12,8.2Z"/></svg>
+                Join Channel
+            </a>
+        </div>
+
+        <!-- ==================== -->
+        <!-- 🔐 ADMIN PANEL -->
+        <!-- ==================== -->
+        <div class="admin-panel" id="adminPanel">
+            <h3>⚙️ Admin Panel</h3>
+            <p>Tambahkan kata terlarang:</p>
+            <div class="row">
+                <input type="text" id="newWord" placeholder="Kata terlarang">
+                <button class="btn-admin" onclick="addWord()">Tambah</button>
+            </div>
+            <p style="margin-top: 12px; font-size: 14px; color: #5a6a80;">Daftar: <span class="word-list" id="wordList"></span></p>
+            <button class="btn-danger" onclick="resetWords()">Reset</button>
+        </div>
+
+        <!-- ==================== -->
+        <!-- 📌 FOOTER -->
+        <!-- ==================== -->
+        <div class="footer">
+            <p>© 2026 Pangeran Hamm. All Rights Reserved.</p>
+            <button class="admin-btn" onclick="showAdmin()">🔐 Admin</button>
+        </div>
+    </div>
+
+    <script>
+        // ====================
+        // 🔒 FILTER
+        // ====================
+        let forbiddenWords = ["anjing", "babi", "kontol", "memek", "ngentot", "goblok", "tolol", "bangsat", "pecun", "asw", "jancok", "cuk", "pukimak", "bacot", "kampret", "bego", "idiot", "setan", "sialan"];
+
+        function containsForbidden(input) {
+            const lower = input.toLowerCase();
+            return forbiddenWords.some(word => lower.includes(word));
+        }
+
+        // ====================
+        // 🔐 ADMIN
+        // ====================
+        const ADMIN_KEY = "PangeranHamm2026";
+
+        function showAdmin() {
+            const key = prompt("🔐 Masukkan Kode Admin:");
+            if (key === ADMIN_KEY) {
+                document.getElementById('adminPanel').style.display = 'block';
+                updateWordList();
+            } else {
+                alert("❌ Kode salah!");
+            }
+        }
+
+        function updateWordList() {
+            document.getElementById('wordList').textContent = forbiddenWords.join(", ");
+        }
+
+        function addWord() {
+            const input = document.getElementById('newWord');
+            const word = input.value.trim().toLowerCase();
+            if (word && !forbiddenWords.includes(word)) {
+                forbiddenWords.push(word);
+                input.value = '';
+                updateWordList();
+                alert('✅ Kata berhasil ditambahkan!');
+            } else {
+                alert('⚠️ Kata sudah ada atau kosong!');
+            }
+        }
+
+        function resetWords() {
+            if (confirm('Reset semua kata terblokir (kecuali default)?')) {
+                forbiddenWords = ["anjing", "babi", "kontol", "memek", "ngentot", "goblok", "tolol", "bangsat", "pecun", "asw", "jancok", "cuk", "pukimak", "bacot", "kampret", "bego", "idiot", "setan", "sialan"];
+                updateWordList();
+                alert('✅ Reset berhasil!');
+            }
+        }
+
+        // ====================
+        // 📩 FORM
+        // ====================
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const nama = document.getElementById('nama').value.trim();
+            const wa = document.getElementById('wa').value.trim();
+            const produk = document.getElementById('produk').value;
+
+            if (containsForbidden(nama)) {
+                alert('⚠️ Nama mengandung kata terlarang!');
+                return;
+            }
+            if (containsForbidden(produk)) {
+                alert('⚠️ Produk mengandung kata terlarang!');
+                return;
+            }
+
+            if (!nama || !wa) {
+                alert('⚠️ Harap isi nama dan nomor WhatsApp!');
+                return;
+            }
+
+            let waClean = wa.replace(/\D/g, '');
+            if (waClean.startsWith('0')) waClean = '62' + waClean.slice(1);
+            if (!waClean.startsWith('62')) waClean = '62' + waClean;
+
+            const pesan = `Halo Kak, saya mau pesan produk: ${produk}%0ANama: ${nama}%0ANo WA: ${wa}`;
+            window.open(`https://wa.me/${waClean}?text=${pesan}`, '_blank');
+        });
+    </script>
+</body>
+</html>
