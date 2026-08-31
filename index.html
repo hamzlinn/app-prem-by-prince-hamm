@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prince Hamm — Alight Motion Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep: #060B18;
+    --bg-mid: #0A1330;
+    --blue-1: #16336B;
+    --blue-2: #2C5CC5;
+    --blue-glow: #6FA0FF;
+    --surface: rgba(18, 30, 60, 0.55);
+    --surface-border: rgba(111, 160, 255, 0.16);
+    --text: #E8EEFC;
+    --text-dim: #8AA0CC;
+  }
+  *{ box-sizing:border-box; }
+  html, body{
+    margin:0;
+    padding:0;
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+  }
+  canvas#bgtext{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+    background: radial-gradient(ellipse at 50% -10%, #0F1F52 0%, #0A1330 45%, #060B18 100%);
+  }
+  .page{
+    position:relative;
+    z-index:1;
+    max-width:640px;
+    margin:0 auto;
+    padding:48px 20px 90px;
+  }
+
+  header{ text-align:center; margin-bottom:36px; opacity:0; animation: fadeUp .7s ease forwards; }
+  .eyebrow{
+    display:inline-block;
+    font-size:12px;
+    color:var(--blue-glow);
+    background:rgba(44,92,197,0.15);
+    border:1px solid rgba(111,160,255,0.25);
+    padding:5px 14px;
+    border-radius:999px;
+    margin-bottom:16px;
+    letter-spacing:.02em;
+  }
+  h1{
+    font-family:'Sora', sans-serif;
+    font-weight:800;
+    font-size:clamp(26px, 6.5vw, 36px);
+    margin:0 0 10px;
+    background: linear-gradient(180deg, #FFFFFF 0%, #9DB9FF 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    letter-spacing:-0.02em;
+  }
+  header p{ color:var(--text-dim); font-size:14.5px; max-width:400px; margin:0 auto; line-height:1.6; }
+
+  .name-box{
+    background: var(--surface);
+    border:1px solid var(--surface-border);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:28px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    opacity:0; animation: fadeUp .7s ease forwards; animation-delay:.1s;
+  }
+  .name-box label{
+    display:block;
+    font-size:12.5px;
+    color:var(--text-dim);
+    margin-bottom:8px;
+  }
+  .name-box input{
+    width:100%;
+    background: rgba(6,11,24,0.6);
+    border:1px solid var(--surface-border);
+    color:var(--text);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14.5px;
+    font-family:inherit;
+    transition: border-color .15s ease;
+  }
+  .name-box input:focus{ outline:none; border-color:var(--blue-glow); }
+  .name-box input.shake{ animation: shake .35s ease; border-color:#E88; }
+  .name-box .warn{
+    display:none;
+    font-size:12px;
+    color:#F29B9B;
+    margin-top:8px;
+  }
+  .name-box .warn.show{ display:block; }
+
+  .cooldown-banner{
+    display:none;
+    background: rgba(44,92,197,0.14);
+    border:1px solid rgba(111,160,255,0.3);
+    color:var(--blue-glow);
+    font-size:13px;
+    font-weight:500;
+    text-align:center;
+    padding:12px 14px;
+    border-radius:12px;
+    margin-bottom:20px;
+  }
+  .cooldown-banner.show{ display:block; }
+
+  .pkg-btn:disabled{
+    opacity:0.4;
+    cursor:not-allowed;
+    filter:none;
+    transform:none;
+    box-shadow:none;
+  }
+  .pkg-btn:disabled:hover{
+    transform:none;
+    filter:none;
+    box-shadow:none;
+  }
+
+  .section-title{
+    font-family:'Sora', sans-serif;
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-dim);
+    margin:0 0 14px 4px;
+  }
+
+  .pkg{
+    background: var(--surface);
+    border:1px solid var(--surface-border);
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:14px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display:flex;
+    align-items:center;
+    gap:16px;
+    opacity:0; animation: fadeUp .6s ease forwards;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .pkg:hover{ transform: translateY(-2px); border-color: rgba(111,160,255,0.4); }
+  .pkg:nth-child(1){ animation-delay:.18s; }
+  .pkg:nth-child(2){ animation-delay:.26s; }
+  .pkg:nth-child(3){ animation-delay:.34s; }
+  .pkg:nth-child(4){ animation-delay:.42s; }
+
+  .pkg-badge{
+    width:52px; height:52px;
+    border-radius:14px;
+    background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Sora', sans-serif;
+    font-weight:700;
+    font-size:13px;
+    color:#fff;
+    flex-shrink:0;
+    box-shadow: 0 6px 18px rgba(44,92,197,0.4);
+    text-align:center;
+    line-height:1.15;
+  }
+  .pkg-info{ flex:1; min-width:0; }
+  .pkg-name{ font-family:'Sora', sans-serif; font-weight:600; font-size:15.5px; }
+  .pkg-duration{ font-size:12.5px; color:var(--text-dim); margin-top:2px; }
+  .pkg-price{
+    font-family:'Sora', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    color:var(--blue-glow);
+    margin-top:6px;
+  }
+  .pkg-btn{
+    flex-shrink:0;
+    border:none;
+    background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+    color:#fff;
+    font-weight:600;
+    font-size:13px;
+    font-family:'Inter', sans-serif;
+    padding:11px 16px;
+    border-radius:11px;
+    cursor:pointer;
+    transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+    box-shadow: 0 4px 14px rgba(44,92,197,0.3);
+    white-space:nowrap;
+  }
+  .pkg-btn:hover{ transform: translateY(-2px); filter:brightness(1.15); box-shadow: 0 8px 20px rgba(111,160,255,0.4); }
+  .pkg-btn:active{ transform: translateY(0); }
+
+  footer{
+    text-align:center;
+    color:var(--text-dim);
+    font-size:12px;
+    margin-top:36px;
+    line-height:1.7;
+    opacity:0; animation: fadeUp .6s ease forwards; animation-delay:.55s;
+  }
+
+  .brand-footer{
+    text-align:center;
+    color:var(--blue-glow);
+    font-size:12.5px;
+    letter-spacing:.04em;
+    margin-top:20px;
+    opacity:0; animation: fadeUp .6s ease forwards; animation-delay:.62s;
+  }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform: translateY(14px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+  @keyframes shake{
+    0%,100%{ transform: translateX(0); }
+    25%{ transform: translateX(-6px); }
+    75%{ transform: translateX(6px); }
+  }
+
+  @media (max-width:420px){
+    .pkg{ flex-wrap:wrap; }
+    .pkg-btn{ width:100%; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bgtext"></canvas>
+
+<div class="page">
+  <header>
+    <span class="eyebrow">Toko resmi Prince Hamm</span>
+    <h1>Alight Motion Premium</h1>
+    <p>Akun premium siap pakai, tanpa watermark, tanpa batas ekspor. Pilih paket, isi nama, langsung order.</p>
+  </header>
+
+  <div class="name-box">
+    <label for="custName">Nama kamu</label>
+    <input id="custName" placeholder="Masukkan nama untuk order" />
+    <div class="warn" id="nameWarn">Nama mengandung kata tidak pantas, mohon ganti nama dulu ya.</div>
+  </div>
+
+  <div class="cooldown-banner" id="cooldownBanner"></div>
+
+  <div class="section-title">Pilih paket</div>
+
+  <div class="pkg" data-name="Private 1 Tahun" data-price="Rp5.000">
+    <div class="pkg-badge">PRIVATE</div>
+    <div class="pkg-info">
+      <div class="pkg-name">Private</div>
+      <div class="pkg-duration">Akun sendiri · 1 tahun</div>
+      <div class="pkg-price">Rp5.000</div>
+    </div>
+    <button class="pkg-btn">Order sekarang</button>
+  </div>
+
+  <div class="pkg" data-name="Sharing 1 Minggu" data-price="Rp2.000">
+    <div class="pkg-badge">SHARE</div>
+    <div class="pkg-info">
+      <div class="pkg-name">Sharing</div>
+      <div class="pkg-duration">Akun bersama · 1 minggu</div>
+      <div class="pkg-price">Rp2.000</div>
+    </div>
+    <button class="pkg-btn">Order sekarang</button>
+  </div>
+
+  <div class="pkg" data-name="Sharing 1 Bulan" data-price="Rp2.000">
+    <div class="pkg-badge">SHARE</div>
+    <div class="pkg-info">
+      <div class="pkg-name">Sharing</div>
+      <div class="pkg-duration">Akun bersama · 1 bulan</div>
+      <div class="pkg-price">Rp2.000</div>
+    </div>
+    <button class="pkg-btn">Order sekarang</button>
+  </div>
+
+  <div class="pkg" data-name="Sharing 1 Hari" data-price="Rp1.000">
+    <div class="pkg-badge">SHARE</div>
+    <div class="pkg-info">
+      <div class="pkg-name">Sharing</div>
+      <div class="pkg-duration">Akun bersama · 1 hari</div>
+      <div class="pkg-price">Rp1.000</div>
+    </div>
+    <button class="pkg-btn">Order sekarang</button>
+  </div>
+
+  <footer>Pesan otomatis akan terkirim ke WhatsApp Prince Hamm setelah kamu menekan tombol order.</footer>
+
+  <div class="brand-footer">©𝗣𝗥𝗜𝗡𝗖𝗘 𝗛𝗔𝗠𝗠 𝗦𝗧𝗨𝗥𝗘𝗘</div>
+</div>
+
+<script>
+const WA_NUMBER = '6285702358225';
+const COOLDOWN_MS = 3 * 60 * 1000;
+const COOLDOWN_KEY = 'am_last_order_ts';
+
+function getRemainingCooldown(){
+  const last = parseInt(localStorage.getItem(COOLDOWN_KEY) || '0', 10);
+  const elapsed = Date.now() - last;
+  return Math.max(0, COOLDOWN_MS - elapsed);
+}
+
+function formatCooldown(ms){
+  const totalSec = Math.ceil(ms / 1000);
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+function updateCooldownUI(){
+  const remaining = getRemainingCooldown();
+  const banner = document.getElementById('cooldownBanner');
+  const buttons = document.querySelectorAll('.pkg-btn');
+  if(remaining > 0){
+    banner.classList.add('show');
+    banner.textContent = `Kamu baru saja order. Tunggu ${formatCooldown(remaining)} lagi sebelum bisa order berikutnya.`;
+    buttons.forEach(b => b.disabled = true);
+  }else{
+    banner.classList.remove('show');
+    buttons.forEach(b => b.disabled = false);
+  }
+}
+
+setInterval(updateCooldownUI, 1000);
+updateCooldownUI();
+
+const BAD_WORDS = [
+  'anjing','anjrit','anjeng','asu','bangsat','bajingan','babi','goblok','goblog',
+  'tolol','tai','taik','kontol','kntl','memek','ngentot','ngentod','ngewe','entot','pepek','peler',
+  'jancok','jancuk','kampret','keparat','pantek','pukimak','puki','sundal',
+  'lonte','pelacur','bego','idiot','setan','biadab','brengsek','bodoh','sialan','monyet',
+  'anjg','bgsat','bgst','kampang','kimak',
+  'fuck','shit','bitch','asshole','bastard','dick','pussy','cunt','whore','slut'
+];
+
+function normalizeText(str){
+  return str
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '')
+    .replace(/0/g,'o').replace(/1/g,'i').replace(/3/g,'e')
+    .replace(/4/g,'a').replace(/5/g,'s').replace(/7/g,'t');
+}
+
+function containsBadWord(str){
+  const normalized = normalizeText(str);
+  return BAD_WORDS.some(word => normalized.includes(word));
+}
+
+document.getElementById('custName').addEventListener('input', () => {
+  document.getElementById('nameWarn').classList.remove('show');
+});
+
+document.querySelectorAll('.pkg-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const nameInput = document.getElementById('custName');
+    const nameWarn = document.getElementById('nameWarn');
+    const custName = nameInput.value.trim();
+    nameWarn.classList.remove('show');
+
+    if(!custName){
+      nameInput.classList.remove('shake');
+      void nameInput.offsetWidth;
+      nameInput.classList.add('shake');
+      nameInput.focus();
+      return;
+    }
+
+    if(containsBadWord(custName)){
+      nameWarn.classList.add('show');
+      nameInput.classList.remove('shake');
+      void nameInput.offsetWidth;
+      nameInput.classList.add('shake');
+      nameInput.focus();
+      return;
+    }
+
+    if(getRemainingCooldown() > 0){
+      updateCooldownUI();
+      return;
+    }
+
+    const card = btn.closest('.pkg');
+    const pkgName = card.getAttribute('data-name');
+    const message = `Halo Prince Hamm, ada pesanan baru nih "${pkgName}" a/n ${custName}, mohon diproses ya.`;
+    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
+    localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
+    updateCooldownUI();
+    window.open(url, '_blank');
+  });
+});
+
+// Floating "Prince Hamm" text background
+const canvas = document.getElementById('bgtext');
+const ctx = canvas.getContext('2d');
+let w, h, dpr;
+
+function resize(){
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  w = window.innerWidth;
+  h = window.innerHeight;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resize();
+window.addEventListener('resize', resize);
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function rand(min, max){ return Math.random() * (max - min) + min; }
+
+const COUNT = window.innerWidth < 600 ? 8 : 14;
+const items = [];
+for(let i=0;i<COUNT;i++){
+  items.push({
+    x: rand(0, w),
+    y: rand(0, h),
+    vx: rand(-0.09, 0.09),
+    vy: rand(-0.06, 0.06),
+    size: rand(16, 34),
+    opacity: rand(0.05, 0.16),
+    rot: rand(-0.15, 0.15)
+  });
+}
+
+function tick(){
+  ctx.clearRect(0, 0, w, h);
+  ctx.font = '700 1px Sora, sans-serif';
+  items.forEach(it => {
+    if(!reduceMotion){
+      it.x += it.vx;
+      it.y += it.vy;
+      if(it.x < -160) it.x = w + 160;
+      if(it.x > w + 160) it.x = -160;
+      if(it.y < -40) it.y = h + 40;
+      if(it.y > h + 40) it.y = -40;
+    }
+    ctx.save();
+    ctx.translate(it.x, it.y);
+    ctx.rotate(it.rot);
+    ctx.font = `700 ${it.size}px Sora, sans-serif`;
+    ctx.fillStyle = `rgba(111,160,255,${it.opacity})`;
+    ctx.textAlign = 'center';
+    ctx.fillText('Prince Hamm', 0, 0);
+    ctx.restore();
+  });
+  requestAnimationFrame(tick);
+}
+tick();
+</script>
+
+</body>
+</html>
