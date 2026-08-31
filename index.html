@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prince Hamm — Alight Motion Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep: #060B18;
+    --bg-mid: #0A1330;
+    --blue-1: #16336B;
+    --blue-2: #2C5CC5;
+    --blue-glow: #6FA0FF;
+    --surface: rgba(18, 30, 60, 0.55);
+    --surface-border: rgba(111, 160, 255, 0.16);
+    --text: #E8EEFC;
+    --text-dim: #8AA0CC;
+  }
+  *{ box-sizing:border-box; }
+  html, body{
+    margin:0;
+    padding:0;
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+  }
+  canvas#bgtext{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+    background: radial-gradient(ellipse at 50% -10%, #0F1F52 0%, #0A1330 45%, #060B18 100%);
+  }
+  .page{
+    position:relative;
+    z-index:1;
+    max-width:640px;
+    margin:0 auto;
+    padding:48px 20px 90px;
+  }
+
+  header{ text-align:center; margin-bottom:36px; opacity:0; animation: fadeUp .7s ease forwards; }
+  .app-icon{
+    width:64px; height:64px;
+    margin:0 auto 18px;
+    border-radius:18px;
+    background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 10px 26px rgba(44,92,197,0.45);
+  }
+  .app-icon svg{ width:32px; height:32px; }
+  h1{
+    font-family:'Sora', sans-serif;
+    font-weight:800;
+    font-size:clamp(26px, 6.5vw, 36px);
+    margin:0 0 10px;
+    background: linear-gradient(180deg, #FFFFFF 0%, #9DB9FF 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    letter-spacing:-0.02em;
+  }
+  header p{ color:var(--text-dim); font-size:14.5px; max-width:400px; margin:0 auto; line-height:1.6; }
+
+  .cooldown-banner{
+    display:none;
+    background: rgba(44,92,197,0.14);
+    border:1px solid rgba(111,160,255,0.3);
+    color:var(--blue-glow);
+    font-size:13px;
+    font-weight:500;
+    text-align:center;
+    padding:12px 14px;
+    border-radius:12px;
+    margin-bottom:20px;
+  }
+  .cooldown-banner.show{ display:block; }
+
+  .section-title{
+    font-family:'Sora', sans-serif;
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-dim);
+    margin:0 0 14px 4px;
+  }
+
+  .pkg{
+    background: var(--surface);
+    border:1px solid var(--surface-border);
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:14px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display:flex;
+    align-items:center;
+    gap:16px;
+    opacity:0; animation: fadeUp .6s ease forwards;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .pkg:hover{ transform: translateY(-2px); border-color: rgba(111,160,255,0.4); }
+  .pkg:nth-child(1){ animation-delay:.18s; }
+  .pkg:nth-child(2){ animation-delay:.26s; }
+  .pkg:nth-child(3){ animation-delay:.34s; }
+  .pkg:nth-child(4){ animation-delay:.42s; }
+
+  .pkg-badge{
+    width:52px; height:52px;
+    border-radius:14px;
+    background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    box-shadow: 0 6px 18px rgba(44,92,197,0.4);
+  }
+  .pkg-badge svg{ width:24px; height:24px; }
+  .pkg-info{ flex:1; min-width:0; }
+  .pkg-name{ font-family:'Sora', sans-serif; font-weight:600; font-size:15.5px; }
+  .pkg-duration{ font-size:12.5px; color:var(--text-dim); margin-top:2px; }
+  .pkg-price{
+    font-family:'Sora', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    color:var(--blue-glow);
+    margin-top:6px;
+  }
+  .pkg-btn{
+    flex-shrink:0;
+    border:none;
+    background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+    color:#fff;
+    font-weight:600;
+    font-size:13px;
+    font-family:'Inter', sans-serif;
+    padding:11px 16px;
+    border-radius:11px;
+    cursor:pointer;
+    transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+    box-shadow: 0 4px 14px rgba(44,92,197,0.3);
+    white-space:nowrap;
+  }
+  .pkg-btn:hover{ transform: translateY(-2px); filter:brightness(1.15); box-shadow: 0 8px 20px rgba(111,160,255,0.4); }
+  .pkg-btn:active{ transform: translateY(0); }
+  .pkg-btn:disabled{
+    opacity:0.4;
+    cursor:not-allowed;
+    filter:none;
+    transform:none;
+    box-shadow:none;
+  }
+  .pkg-btn:disabled:hover{ transform:none; filter:none; box-shadow:none; }
+
+  footer{
+    text-align:center;
+    color:var(--text-dim);
+    font-size:12px;
+    margin-top:36px;
+    line-height:1.7;
+    opacity:0; animation: fadeUp .6s ease forwards; animation-delay:.55s;
+  }
+
+  .brand-footer{
+    text-align:center;
+    color:var(--blue-glow);
+    font-size:12.5px;
+    letter-spacing:.04em;
+    margin-top:20px;
+    opacity:0; animation: fadeUp .6s ease forwards; animation-delay:.62s;
+  }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform: translateY(14px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+  @keyframes shake{
+    0%,100%{ transform: translateX(0); }
+    25%{ transform: translateX(-6px); }
+    75%{ transform: translateX(6px); }
+  }
+
+  /* Order modal */
+  .overlay{
+    position:fixed; inset:0;
+    background: rgba(4,8,18,0.65);
+    backdrop-filter: blur(4px);
+    display:none;
+    align-items:flex-end;
+    justify-content:center;
+    z-index:50;
+  }
+  .overlay.open{ display:flex; }
+  @media (min-width:520px){ .overlay{ align-items:center; } }
+  .modal{
+    background: #0D1A3D;
+    border:1px solid var(--surface-border);
+    border-radius:20px 20px 0 0;
+    padding:26px 22px 28px;
+    width:100%;
+    max-width:420px;
+    animation: slideUp .22s ease;
+  }
+  @media (min-width:520px){ .modal{ border-radius:20px; } }
+  @keyframes slideUp{
+    from{ transform: translateY(26px); opacity:0; }
+    to{ transform: translateY(0); opacity:1; }
+  }
+  .modal-pkg{
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:20px;
+    padding-bottom:18px;
+    border-bottom:1px solid var(--surface-border);
+  }
+  .modal-pkg .pkg-badge{ width:44px; height:44px; }
+  .modal-pkg .pkg-badge svg{ width:20px; height:20px; }
+  .modal-pkg-name{ font-family:'Sora', sans-serif; font-weight:600; font-size:15px; }
+  .modal-pkg-price{ font-size:13px; color:var(--blue-glow); margin-top:2px; }
+
+  .modal label{
+    display:block;
+    font-size:12.5px;
+    color:var(--text-dim);
+    margin-bottom:8px;
+  }
+  .modal input{
+    width:100%;
+    background: rgba(6,11,24,0.6);
+    border:1px solid var(--surface-border);
+    color:var(--text);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14.5px;
+    font-family:inherit;
+    transition: border-color .15s ease;
+  }
+  .modal input:focus{ outline:none; border-color:var(--blue-glow); }
+  .modal input.shake{ animation: shake .35s ease; border-color:#E88; }
+  .modal .warn{
+    display:none;
+    font-size:12px;
+    color:#F29B9B;
+    margin-top:8px;
+  }
+  .modal .warn.show{ display:block; }
+
+  .modal-actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+  }
+  .btn-primary, .btn-secondary{
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    font-family:inherit;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .btn-primary{ background: linear-gradient(135deg, var(--blue-1), var(--blue-2)); color:#fff; }
+  .btn-secondary{ background:transparent; color:var(--text-dim); border:1px solid var(--surface-border); }
+
+  @media (max-width:420px){
+    .pkg{ flex-wrap:wrap; }
+    .pkg-btn{ width:100%; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bgtext"></canvas>
+
+<div class="page">
+  <header>
+    <div class="app-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="5" width="14" height="14" rx="3"/>
+        <path d="M21 8l-4 3 4 3z" fill="#fff" stroke="none"/>
+        <circle cx="10" cy="12" r="2.6"/>
+      </svg>
+    </div>
+    <h1>Alight Motion Premium</h1>
+    <p>Akun premium siap pakai, tanpa watermark, tanpa batas ekspor. Pilih paket yang kamu mau.</p>
+  </header>
+
+  <div class="cooldown-banner" id="cooldownBanner"></div>
+
+  <div class="section-title">Pilih paket</div>
+
+  <div class="pkg" data-name="Private 1 Tahun" data-price="Rp5.000">
+    <div class="pkg-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4" y="10" width="16" height="10" rx="2"/>
+        <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+      </svg>
+    </div>
+    <div class="pkg-info">
+      <div class="pkg-name">Private</div>
+      <div class="pkg-duration">Akun sendiri · 1 tahun</div>
+      <div class="pkg-price">Rp5.000</div>
+    </div>
+    <button class="pkg-btn">Order sekarang</button>
+  </div>
+
+  <div class="pkg" data-name="Sharing 1 Minggu" data-price="Rp2.000">
+    <div class="pkg-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="8" r="3"/>
+        <path d="M2 20c0-3.3 3-6 7-6s7 2.7 7 6"/>
+        <circle cx="17" cy="8" r="2.4"/>
+        <path d="M16.5 14.2c2.6.5 4.5 2.7 4.5 5.8"/>
+      </svg>
+    </div>
+    <div class="pkg-info">
+      <div class="pkg-name">Sharing</div>
+      <div class="pkg-duration">Akun bersama · 1 minggu</div>
+      <div class="pkg-price">Rp2.000</div>
+    </div>
+    <button class="pkg-btn">Order sekarang</button>
+  </div>
+
+  <div class="pkg" data-name="Sharing 1 Bulan" data-price="Rp2.000">
+    <div class="pkg-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="8" r="3"/>
+        <path d="M2 20c0-3.3 3-6 7-6s7 2.7 7 6"/>
+        <circle cx="17" cy="8" r="2.4"/>
+        <path d="M16.5 14.2c2.6.5 4.5 2.7 4.5 5.8"/>
+      </svg>
+    </div>
+    <div class="pkg-info">
+      <div class="pkg-name">Sharing</div>
+      <div class="pkg-duration">Akun bersama · 1 bulan</div>
+      <div class="pkg-price">Rp2.000</div>
+    </div>
+    <button class="pkg-btn">Order sekarang</button>
+  </div>
+
+  <div class="pkg" data-name="Sharing 1 Hari" data-price="Rp1.000">
+    <div class="pkg-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="8" r="3"/>
+        <path d="M2 20c0-3.3 3-6 7-6s7 2.7 7 6"/>
+        <circle cx="17" cy="8" r="2.4"/>
+        <path d="M16.5 14.2c2.6.5 4.5 2.7 4.5 5.8"/>
+      </svg>
+    </div>
+    <div class="pkg-info">
+      <div class="pkg-name">Sharing</div>
+      <div class="pkg-duration">Akun bersama · 1 hari</div>
+      <div class="pkg-price">Rp1.000</div>
+    </div>
+    <button class="pkg-btn">Order sekarang</button>
+  </div>
+
+  <footer>Pesan otomatis akan terkirim ke WhatsApp Prince Hamm setelah kamu konfirmasi order.</footer>
+
+  <div class="brand-footer">©𝗣𝗥𝗜𝗡𝗖𝗘 𝗛𝗔𝗠𝗠 𝗦𝗧𝗨𝗥𝗘𝗘</div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-pkg">
+      <div class="pkg-badge" id="modalIcon"></div>
+      <div>
+        <div class="modal-pkg-name" id="modalPkgName">Paket</div>
+        <div class="modal-pkg-price" id="modalPkgPrice">Rp0</div>
+      </div>
+    </div>
+    <label for="custName">Nama kamu</label>
+    <input id="custName" placeholder="Masukkan nama untuk order" />
+    <div class="warn" id="nameWarn">Nama mengandung kata tidak pantas, mohon ganti nama dulu ya.</div>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="cancelOrder">Batal</button>
+      <button class="btn-primary" id="confirmOrder">Kirim ke WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const WA_NUMBER = '6285702358225';
+const COOLDOWN_MS = 3 * 60 * 1000;
+const COOLDOWN_KEY = 'am_last_order_ts';
+let activeCard = null;
+
+function getRemainingCooldown(){
+  const last = parseInt(localStorage.getItem(COOLDOWN_KEY) || '0', 10);
+  const elapsed = Date.now() - last;
+  return Math.max(0, COOLDOWN_MS - elapsed);
+}
+
+function formatCooldown(ms){
+  const totalSec = Math.ceil(ms / 1000);
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+function updateCooldownUI(){
+  const remaining = getRemainingCooldown();
+  const banner = document.getElementById('cooldownBanner');
+  const buttons = document.querySelectorAll('.pkg-btn');
+  if(remaining > 0){
+    banner.classList.add('show');
+    banner.textContent = `Kamu baru saja order. Tunggu ${formatCooldown(remaining)} lagi sebelum bisa order berikutnya.`;
+    buttons.forEach(b => b.disabled = true);
+  }else{
+    banner.classList.remove('show');
+    buttons.forEach(b => b.disabled = false);
+  }
+}
+
+setInterval(updateCooldownUI, 1000);
+updateCooldownUI();
+
+const BAD_WORDS = [
+  'anjing','anjrit','anjeng','asu','bangsat','bajingan','babi','goblok','goblog',
+  'tolol','tai','taik','kontol','kntl','memek','ngentot','ngentod','ngewe','entot','pepek','peler',
+  'jancok','jancuk','kampret','keparat','pantek','pukimak','puki','sundal',
+  'lonte','pelacur','bego','idiot','setan','biadab','brengsek','bodoh','sialan','monyet',
+  'anjg','bgsat','bgst','kampang','kimak',
+  'fuck','shit','bitch','asshole','bastard','dick','pussy','cunt','whore','slut'
+];
+
+function normalizeText(str){
+  return str
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '')
+    .replace(/0/g,'o').replace(/1/g,'i').replace(/3/g,'e')
+    .replace(/4/g,'a').replace(/5/g,'s').replace(/7/g,'t');
+}
+
+function containsBadWord(str){
+  const normalized = normalizeText(str);
+  return BAD_WORDS.some(word => normalized.includes(word));
+}
+
+const overlay = document.getElementById('overlay');
+const nameInput = document.getElementById('custName');
+const nameWarn = document.getElementById('nameWarn');
+
+document.querySelectorAll('.pkg-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if(getRemainingCooldown() > 0){
+      updateCooldownUI();
+      return;
+    }
+    activeCard = btn.closest('.pkg');
+    document.getElementById('modalPkgName').textContent = activeCard.getAttribute('data-name');
+    document.getElementById('modalPkgPrice').textContent = activeCard.getAttribute('data-price');
+    document.getElementById('modalIcon').innerHTML = activeCard.querySelector('.pkg-badge').innerHTML;
+    nameInput.value = '';
+    nameWarn.classList.remove('show');
+    overlay.classList.add('open');
+    setTimeout(() => nameInput.focus(), 50);
+  });
+});
+
+document.getElementById('cancelOrder').addEventListener('click', () => {
+  overlay.classList.remove('open');
+});
+overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.classList.remove('open'); });
+
+nameInput.addEventListener('input', () => nameWarn.classList.remove('show'));
+
+document.getElementById('confirmOrder').addEventListener('click', () => {
+  const custName = nameInput.value.trim();
+  nameWarn.classList.remove('show');
+
+  if(!custName){
+    nameInput.classList.remove('shake');
+    void nameInput.offsetWidth;
+    nameInput.classList.add('shake');
+    nameInput.focus();
+    return;
+  }
+
+  if(containsBadWord(custName)){
+    nameWarn.classList.add('show');
+    nameInput.classList.remove('shake');
+    void nameInput.offsetWidth;
+    nameInput.classList.add('shake');
+    nameInput.focus();
+    return;
+  }
+
+  if(getRemainingCooldown() > 0){
+    overlay.classList.remove('open');
+    updateCooldownUI();
+    return;
+  }
+
+  const pkgName = activeCard.getAttribute('data-name');
+  const message = `Halo Prince Hamm, ada pesanan baru nih "${pkgName}" a/n ${custName}, mohon diproses ya.`;
+  const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
+  localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
+  updateCooldownUI();
+  overlay.classList.remove('open');
+  window.open(url, '_blank');
+});
+
+// Floating "Prince Hamm" text background
+const canvas = document.getElementById('bgtext');
+const ctx = canvas.getContext('2d');
+let w, h, dpr;
+
+function resize(){
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  w = window.innerWidth;
+  h = window.innerHeight;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resize();
+window.addEventListener('resize', resize);
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function rand(min, max){ return Math.random() * (max - min) + min; }
+
+const COUNT = window.innerWidth < 600 ? 8 : 14;
+const items = [];
+for(let i=0;i<COUNT;i++){
+  items.push({
+    x: rand(0, w),
+    y: rand(0, h),
+    vx: rand(-0.09, 0.09),
+    vy: rand(-0.06, 0.06),
+    size: rand(16, 34),
+    opacity: rand(0.05, 0.16),
+    rot: rand(-0.15, 0.15)
+  });
+}
+
+function tick(){
+  ctx.clearRect(0, 0, w, h);
+  items.forEach(it => {
+    if(!reduceMotion){
+      it.x += it.vx;
+      it.y += it.vy;
+      if(it.x < -160) it.x = w + 160;
+      if(it.x > w + 160) it.x = -160;
+      if(it.y < -40) it.y = h + 40;
+      if(it.y > h + 40) it.y = -40;
+    }
+    ctx.save();
+    ctx.translate(it.x, it.y);
+    ctx.rotate(it.rot);
+    ctx.font = `700 ${it.size}px Sora, sans-serif`;
+    ctx.fillStyle = `rgba(111,160,255,${it.opacity})`;
+    ctx.textAlign = 'center';
+    ctx.fillText('Prince Hamm', 0, 0);
+    ctx.restore();
+  });
+  requestAnimationFrame(tick);
+}
+tick();
+</script>
+
+</body>
+</html>
